@@ -1,13 +1,13 @@
 node{
- 
+    
  properties([
     buildDiscarder(logRotator(numToKeepStr: '3')),
     pipelineTriggers([
         pollSCM('* * * * *')
     ])
 ])
-
- def mavenHome = tool name: 'mavan v3.6.1', type: 'maven'
+ 
+  def mavenHome = tool name: 'mavan v3.6.1', type: 'maven'
  
  stage('CheckoutCode') {
  git credentialsId: 'bd34ad73-cda1-4db8-8169-2e94465b8acd', url: 'https://github.com/suresh-tech/maven-web-application'
@@ -29,7 +29,7 @@ node{
  } 
  
  stage('DeployAppIntoTomcat'){
-  sh "cp $WORKSPACE/target/*.war /opt/apache-tomcat-9.0.19/webapps/"
+  sh "scp ${WORKSPACE}/target/*.war root@13.232.58.27:/opt/apache-tomcat-9.0.17/webapps/"
   } 
   
    stage('SendEmailNotification'){
@@ -43,4 +43,3 @@ node{
     
     
 }
-  } 
