@@ -1,0 +1,33 @@
+#!groovy
+
+node{
+ 
+ properties([
+    buildDiscarder(logRotator(numToKeepStr: '3')),
+    pipelineTriggers([
+        pollSCM('* * * * *')
+    ])
+])
+
+ def mavenHome = tool name: 'mavan v3.6.1', type: 'maven'
+ 
+ stage('CheckoutCode') {
+ git credentialsId: 'bd34ad73-cda1-4db8-8169-2e94465b8acd', url: 'https://github.com/suresh-tech/maven-web-application'
+ }  
+  
+  stage('Build') {
+ 
+    sh "${mavenHome}/bin/mvn clean package"
+  }
+
+  stage('ExecuteSonarQubeReport') {
+ 
+ sh "${mavenHome}/bin/mvn sonar:sonar"
+ }     
+  
+  stage('UploadArtifactIntoNexus') {
+ 
+ sh "${mavenHome}/bin/mvn deploy"
+ } 
+ 
+}
