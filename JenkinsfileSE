@@ -29,7 +29,7 @@ node{
  } 
  
  stage('DeployAppIntoTomcat'){
-  sh "scp ${WORKSPACE}/target/*.war root@13.232.58.27:/opt/apache-tomcat-9.0.17/webapps/"
+  sh "scp ${WORKSPACE}/target/*.war root@13.233.47.128:/opt/apache-tomcat-9.0.17/webapps/"
   } 
   
    stage('SendEmailNotification'){
